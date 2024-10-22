@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calculadora de Empréstimo | Resultados</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5865817649832793"
+        crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-5865817649832793">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V1JD0D4KM1">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-V1JD0D4KM1');
+    </script>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <main class="content">
+            <div class="container">
+                <section class="title-section text-center">
+                    <h1 class="title">Calcular Empréstimo</h1>
+                    <div class="version-area">
+                        <span class="version">v1.0.0 - 22/10/2024</span>
+                    </div>
+                    <div class="logo"></div>
+                    <p class="fw-bold">Calcule o empréstimo, a parcela, o prazo ou a taxa, na tabela PRICE ou SAC.
+                        <br>
+                        Deixe o campo que
+                        deseja
+                        calcular em branco.
+                    </p>
+                    <div class="d-flex justify-content-center">
+
+                        <a href="mailto:suporte@calcularrendapassiva.com.br?subject=Críticas%20e%20Sugestões"
+                            class="btn btn-primary btn-sm mb-3"><i class="fas fa-envelope"></i> Críticas
+                            e Sugestões</a>
+
+                        <!-- <a href="premium.html" class="btn btn-warning btn-sm mb-3 border border-dark"><i
+                                class="fa-regular fa-star"></i>
+                            Tirar
+                            Anúncios</a> -->
+                    </div>
+                </section>
+
+
+
+                <section class="flip-card flip-card-flipped">
+                    <div class="section-divider">
+                        <span class="section-title">Resultados</span>
+                    </div>
+                    <div class="flip-card-inner">
+                        <!-- Formulário (verso) -->
+                        <div class="flip-card-front">
+                            <form id="rendaForm">
+                                <div class="form-floating mb-3">
+                                    <input type="search" inputmode="numeric" class="form-control" id="periodo"
+                                        placeholder="Prazo (meses)" maxlength="3">
+                                    <label for="periodo">Prazo (meses)</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="search" inputmode="numeric" class="form-control percent" id="txPeriodo"
+                                        placeholder="Taxa Mensal (%)" maxlength="5">
+                                    <label for="txPeriodo">Taxa Mensal (%)</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="search" inputmode="numeric" class="form-control value"
+                                        id="vlrEmprestimo" placeholder="Valor do Empréstimo">
+                                    <label for="valor">Valor do Empréstimo</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <select name="tipoAmortizacao" id="tipoAmortizacao" class="form-control pt-2"
+                                        style="font-size: 1rem;font-weight: 400;color: #6c757d;">
+                                        <option value="price" selected>PRICE</option>
+                                        <option value="sac">SAC</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="search" inputmode="numeric" class="form-control value" id="vlrParcela"
+                                        placeholder="Valor da Parcela">
+                                    <label for="parcela">Valor da Parcela</label>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-success" id="calcularBtn">
+                                        <i class="fas fa-calculator"></i> Calcular
+                                    </button>
+                                    <button type="reset" class="btn btn-danger" id="btn-reset">
+                                        <i class="fas fa-trash-alt"></i> Limpar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Resultados (verso) -->
+                        <div class="flip-card-back">
+                            <div class="result-section">
+                                <p id="resultEmprestimo"></p>
+                                <p id="resultPrazo"></p>
+                                <p id="resultTaxa"></p>
+                                <p id="resultParcelaInicial"></p>
+                                <p id="resultParcelaFinal"></p>
+                                <p id="resultSistema"></p>
+                                <p id="resultTotal"></p>
+                                <p id="resultJuros"></p>
+                                <hr>
+                                <div class="btn-area">
+                                    <button class="btn btn-primary my-1" id="voltarBtn">
+                                        <i class="fas fa-arrow-left"></i> Voltar
+                                    </button>
+                                    <button type="button" class="btn btn-secondary my-1" id="copiarBtn">
+                                        <i class="fas fa-copy"></i> Copiar Resultados
+                                    </button>
+                                </div>
+                            </div>
+                            <strong>IMPORTANTE</strong>: O valor das parcelas pode variar caso haja a incidência de
+                            impostos ou taxas adicionais. Para mais informações, consulte o seu contrato de empréstimo
+                            ou entre em contato com o agente de crédito.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Botões extras -->
+                <section class="botoes-extras">
+                    <div class="row gap-3">
+
+                        <div class="section-divider">
+                            <span class="section-title">App Grátis na Playstore</span>
+                        </div>
+
+                        <div class="col-sm">
+                            <a href="https://link.mercadopago.com.br/carlosdev" target="_blank"
+                                class="btn btn-lg btn-cafe d-block">
+                                <div class="row align-items-center">
+                                    <div class="col-2"><i class="fas fa-coffee" style="font-size: 28px;"></i></div>
+                                    <div class="col-10">Me pague um cafezinho</div>
+                                </div>
+                            </a>
+                        </div>
+                        <!-- <div class="col-sm">
+                            <a href="https://play.google.com/store/apps/details?id=com.cwrsiqueira.crp_app&pcampaignid=web_share"
+                                target="_blank" class="btn btn-lg btn-playstore d-block">
+                                <div class="row align-items-center">
+                                    <div class="col-2"><i class="fa-brands fa-google-play" style="font-size: 28px;"></i>
+                                    </div>
+                                    <div class="col-10">Baixe o app na PlayStore</div>
+                                </div>
+                            </a>
+                        </div> -->
+                    </div>
+                </section>
+
+                <!-- <div class="section-divider">
+                    <span class="section-title">Outras calculadoras</span>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row justify-content-center">
+                    <div>
+                        <ul>
+                            <li><strong>Aplicações financeiras</strong> <br>
+                                <small>Calcule o rendimento e o valor acumulado</small>
+                            </li>
+                            <li><strong>Empréstimos e financiamentos</strong> <br>
+                                <small>Calcule o valor a pagar de parcela e total</small>
+                            </li>
+                            <li><strong>Antecipação de parcelas</strong> <br>
+                                <small>Calcule o desconto e o valor a pagar de parcelas antecipadas</small>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul>
+                            <li><strong>Juros simples e compostos</strong> <br>
+                                <small>Calcule um valor com os dois tipos de juros e compare</small>
+                            </li>
+                            <li><strong>Outras em breve</strong> <br>
+                                <small>Estamos sempre criando. Aguarde as novidades</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+
+                <!-- <div class="section-divider">
+                    <span class="section-title">Sugestão de vídeos e artigos</span>
+                </div> -->
+            </div>
+
+            <!-- <div class="container-fluid">
+                <div class="row justify-content-center gap-3">
+                    <div class="col-sm-4 text-center text-sm-end">
+                        <iframe style="width: 100%; max-width: 310px;"
+                            src="https://www.youtube.com/embed/lvL8-vF3Wjc?si=KIDohUxcuegt_Pf2"
+                            title="YouTube video player" frameborder="0" class="rounded"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="col-sm-4 text-center text-sm-start">
+                        <iframe style="width: 100%; max-width: 310px;"
+                            src="https://www.youtube.com/embed/lvL8-vF3Wjc?si=KIDohUxcuegt_Pf2"
+                            title="YouTube video player" frameborder="0" class="rounded"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div> -->
+
+            <section class="container">
+
+                <div class="section-divider">
+                    <span class="section-title">Bom saber</span>
+                </div>
+
+                <div class="information-text">
+
+                    <h4>Entendendo os Resultados</h4>
+                    <p>Abaixo estão as explicações detalhadas de cada item calculado para ajudar você a entender melhor
+                        o que cada um
+                        significa e como ele contribui para o seu planejamento financeiro.</p>
+
+                    <ul>
+                        <li><strong>Valor do Empréstimo:</strong> Este é o valor total que você está financiando. Ele
+                            influencia diretamente no valor das parcelas e nos juros que você pagará ao longo do tempo.
+                        </li>
+
+                        <li><strong>Prazo (meses):</strong> Este é o tempo em que você vai pagar o empréstimo, expresso
+                            em meses. O prazo impacta o valor das parcelas, sendo que prazos maiores geralmente resultam
+                            em parcelas menores, porém com mais juros acumulados.</li>
+
+                        <li><strong>Taxa de Juros Mensal (%):</strong> A taxa de juros mensal é o percentual aplicado ao
+                            saldo devedor a cada mês. Uma taxa de juros mais alta aumenta o valor final pago e o valor
+                            das parcelas.</li>
+
+                        <li><strong>Valor da Parcela Inicial:</strong> No sistema SAC, as parcelas iniciais tendem a ser
+                            mais altas, pois a amortização do saldo devedor é constante e os juros são calculados sobre
+                            o valor total do empréstimo. No sistema PRICE, o valor da primeira parcela já será o valor
+                            fixo, pois a amortização e os juros são distribuídos igualmente ao longo do tempo.</li>
+
+                        <li><strong>Valor da Parcela Final:</strong> No sistema SAC, as parcelas finais serão menores,
+                            já que os juros diminuem conforme o saldo devedor é amortizado. No sistema PRICE, o valor da
+                            última parcela será o mesmo da inicial, pois as parcelas são fixas durante todo o
+                            financiamento.</li>
+
+                        <li><strong>Sistema de Amortização:</strong> Este é o método utilizado para calcular as parcelas
+                            ao longo do tempo. No sistema <strong>PRICE</strong>, as parcelas são fixas, enquanto no
+                            sistema <strong>SAC</strong> as parcelas diminuem ao longo do tempo.</li>
+
+                        <li><strong>Total Pago:</strong> Esse é o valor total que você pagará ao longo de todo o
+                            financiamento, incluindo o valor do empréstimo e os juros acumulados. Ele reflete o custo
+                            total do empréstimo.</li>
+
+                        <li><strong>Juros Totais:</strong> Este valor representa o montante total de juros que você
+                            pagará durante o financiamento. Ele é influenciado pela taxa de juros, pelo prazo e pelo
+                            sistema de amortização escolhido.</li>
+                    </ul>
+
+                    <p>Essas informações são fundamentais para ajudá-lo a entender como o empréstimo será pago ao longo
+                        do tempo e como cada um dos parâmetros afeta o valor total que você pagará. Lembre-se de que a
+                        escolha do sistema de amortização e o planejamento são essenciais para adequar o financiamento
+                        às suas necessidades financeiras!</p>
+
+                    <h2>O que são os Sistemas PRICE e SAC?</h2>
+                    <p>Os sistemas <strong>PRICE</strong> e <strong>SAC</strong> são os dois principais métodos de
+                        amortização usados em financiamentos e empréstimos, e cada um tem características distintas que
+                        influenciam diretamente o valor das parcelas ao longo do tempo e o montante final a ser pago.
+                    </p>
+
+                    <h3>Sistema PRICE</h3>
+                    <p>No sistema <strong>PRICE</strong>, as parcelas são fixas durante todo o período do financiamento.
+                        Isso significa que, desde a primeira até a última parcela, o valor que você pagará será sempre o
+                        mesmo. O cálculo das parcelas no sistema PRICE envolve a aplicação de juros compostos, o que
+                        resulta em uma distribuição equilibrada entre a amortização do saldo devedor e os juros ao longo
+                        do tempo.</p>
+
+                    <p>No início do financiamento, a maior parte da parcela é destinada ao pagamento de juros, enquanto
+                        uma parte menor vai para a amortização do valor principal (o valor emprestado). Com o passar do
+                        tempo, a proporção muda: a amortização aumenta e os juros diminuem, mas o valor total da parcela
+                        permanece o mesmo.</p>
+
+                    <p>Esse sistema é preferido por pessoas que buscam previsibilidade e controle sobre o orçamento,
+                        pois sabem exatamente o valor das parcelas durante todo o período do empréstimo. No entanto, é
+                        importante lembrar que, por ser um sistema de juros compostos, o valor total pago em juros pode
+                        ser maior em comparação ao sistema SAC, especialmente em financiamentos de longo prazo.</p>
+
+                    <h3>Sistema SAC</h3>
+                    <p>O <strong>SAC</strong> (Sistema de Amortização Constante) funciona de maneira diferente. Nele, a
+                        amortização do valor principal é constante em todas as parcelas. Isso significa que, a cada mês,
+                        você paga a mesma quantia para reduzir o saldo devedor, mas os juros diminuem ao longo do tempo,
+                        pois são calculados sobre o saldo devedor restante.</p>
+
+                    <p>No início do financiamento, as parcelas são mais altas porque os juros são calculados sobre o
+                        valor total do empréstimo. Conforme o saldo devedor diminui, os juros também caem, fazendo com
+                        que as parcelas se tornem gradualmente menores. Isso resulta em uma redução significativa no
+                        valor das últimas parcelas em comparação às primeiras.</p>
+
+                    <p>Embora o sistema SAC resulte em parcelas iniciais mais altas, ele tem a vantagem de reduzir o
+                        valor total pago em juros ao longo do financiamento. Isso ocorre porque os juros diminuem
+                        conforme o saldo devedor é amortizado. Para quem pode lidar com parcelas mais altas no início e
+                        deseja pagar menos juros no total, o sistema SAC é geralmente uma escolha mais econômica.</p>
+
+                    <h3>Diferenças e Impactos</h3>
+                    <p>A principal diferença entre os dois sistemas está na forma como os juros são calculados e
+                        distribuídos. No sistema <strong>PRICE</strong>, o efeito dos juros compostos é mais evidente,
+                        pois os juros são pagos de maneira constante ao longo do financiamento. Já no sistema
+                        <strong>SAC</strong>, o impacto dos juros é mais sentido nas primeiras parcelas, com uma redução
+                        gradual à medida que o saldo devedor é amortizado.
+                    </p>
+
+                    <p>Em financiamentos de longo prazo, o sistema <strong>SAC</strong> tende a ser mais vantajoso em
+                        termos de economia de juros, pois o saldo devedor é reduzido mais rapidamente. No entanto, é
+                        importante estar preparado para lidar com parcelas mais altas no início. O sistema
+                        <strong>PRICE</strong>, por outro lado, oferece maior previsibilidade e controle sobre o
+                        orçamento mensal, mas pode resultar em um montante maior de juros pagos ao longo do tempo.
+                    </p>
+
+                    <p>Ambos os sistemas têm seus benefícios, e a escolha depende das suas prioridades financeiras. Se
+                        você prefere ter parcelas fixas e previsíveis, o sistema <strong>PRICE</strong> pode ser mais
+                        adequado. Se deseja economizar nos juros totais e pode arcar com parcelas iniciais maiores, o
+                        sistema <strong>SAC</strong> pode ser a melhor opção.</p>
+
+                    <p>A <strong>Calculadora de Empréstimo</strong> permite que você simule ambos os sistemas, ajudando
+                        a visualizar os diferentes cenários e a tomar uma decisão informada sobre qual opção é mais
+                        vantajosa para o seu perfil financeiro.</p>
+
+                    <p><strong>IMPORTANTE:</strong> Os cálculos realizados por esta calculadora são estimativas baseadas
+                        nas informações fornecidas. As taxas de juros e condições de financiamento podem variar de
+                        acordo com o mercado e a instituição financeira escolhida. Utilize as simulações como
+                        referência, mas consulte as condições reais oferecidas pelas instituições financeiras.</p>
+
+                </div>
+
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2024 Todos os direitos reservados.<br>Conheça nossos projetos nas nossas redes sociais:</p>
+            <div class="social-icons d-flex gap-3 justify-content-center mb-3">
+                <a target="_blank" href="https://www.youtube.com/@carlosjornadadev"><i class="fab fa-youtube"
+                        style="font-size: 26px;"></i></a>
+                <a target="_blank" href="https://github.com/cwrsiqueira"><i class="fab fa-github"
+                        style="font-size: 26px;"></i></a>
+                <a target="_blank" href="https://www.linkedin.com/in/carloswagner1975/"><i class="fab fa-linkedin"
+                        style="font-size: 26px;"></i></a>
+            </div>
+            <a style="color: white;" href="termos-de-uso-e-politicas-de-privacidade.html">Termos de Uso e Políticas de
+                Privacidade</a>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Vercel Script tag -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <!-- Jquery -->
+    <script src="jquery.mask.min.js"></script>
+    <!-- My script js -->
+    <script src="script.js"></script>
+</body>
+
+</html>
