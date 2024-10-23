@@ -108,7 +108,6 @@ function calcularemprestimo() {
     taxa = txPeriodo ? parseFloat(formatarValor(txPeriodo)) : 0,
     emprestimo = vlrEmprestimo ? parseFloat(formatarValor(vlrEmprestimo)) : 0,
     parcela = vlrParcela ? parseFloat(formatarValor(vlrParcela)) : 0,
-    amortizacao = tipoAmortizacao,
     parcelaInicial = 0,
     parcelaFinal = 0,
     total = 0,
@@ -116,41 +115,166 @@ function calcularemprestimo() {
 
   // Cálculo baseado no campo vazio identificado
   switch (campoEmBranco) {
+    // Calcular o prazo
     case 0:
-      // Calcular o prazo
-      console.log("Calcular Prazo");
-      prazo = 0;
-      taxa = 0;
-      emprestimo = 0;
-      parcelaInicial = 0;
-      parcelaFinal = 0;
-      total = 0;
-      juros = 0;
+      if (tipoAmortizacao === "price") {
+        saldoDevedor = emprestimo;
+        prazo = 0;
+        while (saldoDevedor > 0.01) {
+          saldoDevedor = saldoDevedor - parcela + saldoDevedor * (taxa / 100);
+          prazo++;
+
+          if (prazo > 999) {
+            break;
+          }
+        }
+        parcelaInicial = parcela;
+        parcelaFinal = parcela;
+        total = parcela * prazo;
+        juros = total - emprestimo;
+      }
+
+      if (tipoAmortizacao === "sac") {
+        saldoDevedor = emprestimo;
+        prazo = 0;
+
+        amortizacaoMensal = parseFloat(
+          (parcela - saldoDevedor * (taxa / 100)).toFixed(2)
+        );
+        prazo = parseInt((emprestimo / amortizacaoMensal).toFixed(2));
+
+        let parcelas = [];
+        for (i = 1; i <= prazo; i++) {
+          parcelaNr = i;
+          juros = saldoDevedor * (taxa / 100);
+          amortizacaoMensal;
+          parcelaValor = parseFloat((juros + amortizacaoMensal).toFixed(2));
+          saldoDevedor = parseFloat(
+            (saldoDevedor + juros - parcelaValor).toFixed(2)
+          );
+          total += parcelaValor;
+
+          parcelas.push({
+            parcelaNr,
+            juros,
+            amortizacaoMensal,
+            parcelaValor,
+            saldoDevedor,
+          });
+        }
+
+        parcelaInicial = parcela;
+        parcelaFinal = parcelas[parcelas.length - 1].parcelaValor;
+        juros = total - emprestimo;
+      }
       break;
+    // Calcular a taxa
     case 1:
-      // Calcular a taxa
-      console.log("Calcular Taxa");
-      prazo = 0;
-      taxa = 0;
-      emprestimo = 0;
-      parcelaInicial = 0;
-      parcelaFinal = 0;
-      total = 0;
-      juros = 0;
+      if (tipoAmortizacao === "price") {
+        function calcularParcela(emprestimo, taxa, prazo) {
+          return (emprestimo * taxa) / (1 - Math.pow(1 + taxa, -prazo));
+        }
+
+        let taxaBaixa = 0; // Limite inferior para a taxa de juros
+        let taxaAlta = 1; // Limite superior (assumindo que 100% é o limite superior)
+        let taxa = (taxaBaixa + taxaAlta) / 2; // Estimativa inicial
+        let precisao = 1e-9; // Precisão desejada
+
+        while (taxaAlta - taxaBaixa > precisao) {
+          let parcelaCalculada = calcularParcela(emprestimo, taxa, prazo);
+
+          if (parcelaCalculada > parcela) {
+            taxaAlta = taxa; // Aumenta a precisão, ajustando o limite superior
+          } else {
+            taxaBaixa = taxa; // Ajusta o limite inferior
+          }
+
+          taxa = (taxaBaixa + taxaAlta) / 2; // Recalcula a taxa
+        }
+
+        taxaCalculada = taxa * 100;
+        parcelaInicial = parcela;
+        parcelaFinal = parcela;
+        total = parcela * prazo;
+      }
+
+      if (tipoAmortizacao === "sac") {
+        amortizacao = emprestimo / prazo;
+        taxaCalculada = ((parcela - amortizacao) / emprestimo) * 100;
+
+        let parcelas = [];
+        saldoDevedor = emprestimo;
+        for (i = 1; i <= prazo; i++) {
+          parcelaNr = i;
+          juros = saldoDevedor * (taxaCalculada / 100);
+          amortizacaoMensal = amortizacao;
+          parcelaValor = parseFloat((juros + amortizacaoMensal).toFixed(2));
+          saldoDevedor = parseFloat(
+            (saldoDevedor + juros - parcelaValor).toFixed(2)
+          );
+          total += parcelaValor;
+
+          parcelas.push({
+            parcelaNr,
+            juros,
+            amortizacaoMensal,
+            parcelaValor,
+            saldoDevedor,
+          });
+        }
+
+        parcelaInicial = parcela;
+        parcelaFinal = parcelas[parcelas.length - 1].parcelaValor;
+      }
+
+      taxa = taxaCalculada;
+      juros = total - emprestimo;
       break;
+    // Calcular o valor do emprestimo
     case 2:
-      // Calcular o valor do emprestimo
-      console.log("Calcular Empréstimo");
-      prazo = 0;
-      taxa = 0;
-      emprestimo = 0;
-      parcelaInicial = 0;
-      parcelaFinal = 0;
-      total = 0;
-      juros = 0;
+      if (tipoAmortizacao === "price") {
+        emprestimo =
+          ((parcela * (1 - Math.pow(1 + taxa / 100, -prazo))) / taxa) * 100;
+        parcelaInicial = parcela;
+        parcelaFinal = parcela;
+        total = parcela * prazo;
+      }
+
+      if (tipoAmortizacao === "sac") {
+        emprestimo = parcela / (1 / prazo + taxa / 100);
+
+        saldoDevedor = emprestimo;
+        amortizacaoMensal = saldoDevedor / prazo;
+        let parcelas = [];
+        for (i = 1; i <= prazo; i++) {
+          parcelaNr = i;
+          juros = saldoDevedor * (taxa / 100);
+          amortizacaoMensal;
+          parcelaValor = parseFloat((juros + amortizacaoMensal).toFixed(2));
+          saldoDevedor = parseFloat(
+            (saldoDevedor + juros - parcelaValor).toFixed(2)
+          );
+          total += parcelaValor;
+
+          parcelas.push({
+            parcelaNr,
+            juros,
+            amortizacaoMensal,
+            parcelaValor,
+            saldoDevedor,
+          });
+        }
+
+        console.log(parcelas);
+
+        parcelaInicial = parcela;
+        parcelaFinal = parcelas[parcelas.length - 1].parcelaValor;
+      }
+
+      juros = total - emprestimo;
       break;
+    // Calcular as parcelas
     case 3:
-      // Calcular as parcelas
       let calcParcela = 0;
       let calcParcelaFinal = 0;
       let calcTotal = 0;
