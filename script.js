@@ -383,10 +383,10 @@ if (document.getElementById("voltarBtn")) {
 }
 
 // Verifica se a página de resultados está acessada diretamente sem cálculo
-// currentPage = window.location.pathname.split("/").pop(); // Pega a última parte da URL /index.html, /results.html etc.
-// if (currentPage == "results.html" && !sessionStorage.getItem("rendaPassiva")) {
-//   window.location.href = "/"; // Redireciona para o início se não houver dados calculados
-// }
+currentPage = window.location.pathname.split("/").pop(); // Pega a última parte da URL /index.html, /results.html etc.
+if (currentPage == "results.html" && !sessionStorage.getItem("emprestimo")) {
+  window.location.href = "/"; // Redireciona para o início se não houver dados calculados
+}
 
 if (document.getElementById("resultPrazo")) {
   // Exibe os resultados na página de resultados
