@@ -38,7 +38,7 @@
                 <section class="title-section text-center">
                     <h1 class="title">Calcular Empréstimo</h1>
                     <div class="version-area">
-                        <span class="version">v1.0.0 - 23/10/2024</span>
+                        <span class="version">v1.0.1 - 25/10/2024</span>
                     </div>
                     <div class="logo"></div>
                     <p class="fw-bold">Calcule o empréstimo, a parcela, o prazo ou a taxa, na tabela PRICE ou SAC.
@@ -134,19 +134,22 @@
                                     </button>
                                 </div>
                             </div>
-                            <strong>IMPORTANTE</strong>: O valor das parcelas pode variar caso haja a incidência de
-                            impostos ou taxas adicionais. Para mais informações, consulte o seu contrato de empréstimo
-                            ou entre em contato com o agente de crédito.
+                            <p>
+                                <strong>IMPORTANTE</strong>: O valor das parcelas pode variar caso haja a incidência de
+                                impostos ou taxas adicionais. Para mais informações, consulte o seu contrato de
+                                empréstimo
+                                ou entre em contato com o agente de crédito.
+                            </p>
                         </div>
                     </div>
                 </section>
 
                 <!-- Botões extras -->
-                <section class="botoes-extras">
+                <section class="botoes-extras-back">
                     <div class="row gap-3">
 
                         <div class="section-divider">
-                            <span class="section-title">App Grátis na Playstore</span>
+                            <span class="section-title">Ajude a manter o site gratuito</span>
                         </div>
 
                         <div class="col-sm">
@@ -375,6 +378,14 @@
     <script src="jquery.mask.min.js"></script>
     <!-- My script js -->
     <script src="script.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            const flipcardback = document.querySelector(".flip-card-back").offsetHeight;
+            console.log(flipcardback);
+            const botoesextrasback = document.querySelector(".botoes-extras-back");
+            botoesextrasback.style.marginTop = flipcardback - 400 + "px";
+        });
+    </script>
 </body>
 
 </html>

@@ -1,11 +1,3 @@
-window.addEventListener("load", function () {
-  // Pega o offsetHeight do tamanho atual do card da calculadora
-  // e acrescenta a diferença como margin top do elemento abaixo.
-  const flipcardfront = document.querySelector(".flip-card-front").offsetHeight;
-  const botoesextras = document.querySelector(".botoes-extras");
-  botoesextras.style.marginTop = flipcardfront - 400 + "px";
-});
-
 // Formatar máscaras dos valores (para campos de input com valores monetários e percentuais)
 $(".value").mask("000.000.000,00", { reverse: true }); // Formata o valor monetário com pontuação e vírgula (ex: 1.000,00)
 $(".percent").mask("00,00", { reverse: true }); // Formata o valor percentual com vírgula (ex: 10,00%)
