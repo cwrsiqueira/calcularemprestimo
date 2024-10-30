@@ -2,11 +2,35 @@
 $(".value").mask("000.000.000,00", { reverse: true }); // Formata o valor monetário com pontuação e vírgula (ex: 1.000,00)
 $(".percent").mask("00,00", { reverse: true }); // Formata o valor percentual com vírgula (ex: 10,00%)
 
+//// CONVERTE JUROS MENSAIS EM ANUAIS E VICE VERSA
+
+// Pega os campos onde o usuário digita as taxas de juros
+const txAnual = document.querySelector("#txAnual");
+const txPeriodo = document.querySelector("#txPeriodo");
+
+// Enquanto o usuário digita o juros anual, transforma em juros mensal e preenche o campo Taxa Mensal
+txAnual.addEventListener("keyup", function () {
+  let value = this.value.replace(",", ".");
+  let txMensal = Math.pow(1 + value / 100, 1 / 12) - 1;
+  txPeriodo.value = (txMensal * 100).toFixed(2).replace(".", ",");
+});
+
+// Enquanto o usuário digita o juros mensal, transforma em juros anual e preenche o campo Taxa Anual
+txPeriodo.addEventListener("keyup", function () {
+  let value = this.value.replace(",", ".");
+  let txPeriodo = Math.pow(1 + value / 100, 12) - 1;
+  txAnual.value = (txPeriodo * 100).toFixed(2).replace(".", ",");
+});
+
+//// -----------
+
 // Recupera valores previamente salvos no sessionStorage e preenche os campos correspondentes
 document.getElementById("periodo").value =
   sessionStorage.getItem("periodo") || "";
 document.getElementById("txPeriodo").value =
   sessionStorage.getItem("txPeriodo") || "";
+document.getElementById("txAnual").value =
+  sessionStorage.getItem("txAnual") || "";
 document.getElementById("vlrEmprestimo").value =
   sessionStorage.getItem("vlrEmprestimo") || "";
 document.getElementById("vlrParcela").value =
@@ -25,6 +49,7 @@ function calcularemprestimo() {
   // Captura os valores inseridos pelo usuário
   const periodo = document.getElementById("periodo").value;
   const txPeriodo = document.getElementById("txPeriodo").value;
+  const txAnual = document.getElementById("txAnual").value;
   const vlrEmprestimo = document.getElementById("vlrEmprestimo").value;
   const vlrParcela = document.getElementById("vlrParcela").value;
   const tipoAmortizacao = document.getElementById("tipoAmortizacao").value;
@@ -32,6 +57,7 @@ function calcularemprestimo() {
   // Salva os valores no sessionStorage para manter as informações na página
   sessionStorage.setItem("periodo", periodo);
   sessionStorage.setItem("txPeriodo", txPeriodo);
+  sessionStorage.setItem("txAnual", txAnual);
   sessionStorage.setItem("vlrEmprestimo", vlrEmprestimo);
   sessionStorage.setItem("vlrParcela", vlrParcela);
   sessionStorage.setItem("tipoAmortizacao", tipoAmortizacao);
