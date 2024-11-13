@@ -66,13 +66,17 @@
 
 <body>
 
+    <button id="backToTop" class="btn btn-primary p-3">
+        <i class="fa-solid fa-circle-arrow-up fa-2xl"></i>
+    </button>
+
     <div class="wrapper">
         <main class="content">
             <div class="container">
                 <section class="title-section text-center">
                     <h1 class="title">Calcular Empréstimo</h1>
                     <div class="version-area">
-                        <span class="version">v1.1.0 - 30/10/2024</span>
+                        <span class="version">v1.2.0 -13/11/2024</span>
                     </div>
                     <div class="logo"></div>
                     <p class="fw-bold">Calcule o empréstimo, a parcela, o prazo ou a taxa, na tabela PRICE ou SAC.
@@ -105,18 +109,33 @@
                         <div class="flip-card-front">
                             <form id="rendaForm">
 
+                                <p><a href="#comoUtilizarACalculadoraDeEmprestimo"><small>Como utilizar a Calculadora
+                                            de Empréstimo?</small></a></p>
                                 <div class="form-floating mb-3">
                                     <input type="search" inputmode="numeric" class="form-control value"
                                         id="vlrEmprestimo" placeholder="Valor do Empréstimo">
                                     <label for="valor">Valor do Empréstimo</label>
                                 </div>
 
-                                <div class="form-floating mb-3">
-                                    <input type="search" inputmode="numeric" class="form-control" id="periodo"
-                                        placeholder="Prazo (meses)" maxlength="3">
-                                    <label for="periodo">Prazo (meses)</label>
+                                <p><small>Preencha Prazo em meses ou anos</small></p>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="search" inputmode="numeric" class="form-control" id="periodo"
+                                                placeholder="Prazo (meses)" maxlength="3">
+                                            <label for="periodo">Prazo (meses)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="search" inputmode="numeric" class="form-control"
+                                                id="periodoAnual" placeholder="Prazo (anos)" maxlength="2">
+                                            <label for="periodoAnual">Prazo (anos)</label>
+                                        </div>
+                                    </div>
                                 </div>
 
+                                <p><small>Preencha Taxa mensal ou anual (%)</small></p>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-floating mb-3">
@@ -134,11 +153,15 @@
                                     </div>
                                 </div>
 
+                                <hr>
+
+                                <p><a href="#oqSaoOsSistemasPriceESac"><small>O que são os Sistemas PRICE e
+                                            SAC?</small></a></p>
                                 <div class="form-floating mb-3">
                                     <select name="tipoAmortizacao" id="tipoAmortizacao" class="form-control pt-2"
                                         style="font-size: 1rem;font-weight: 400;color: #6c757d;">
-                                        <option value="price">PRICE</option>
-                                        <option value="sac">SAC</option>
+                                        <option value="price">Sistema PRICE</option>
+                                        <option value="sac">Sistema SAC</option>
                                     </select>
                                 </div>
 
@@ -149,13 +172,17 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-success" id="calcularBtn">
+                                    <button type="button" class="btn btn-sm btn-success" id="calcularBtn">
                                         <i class="fas fa-calculator"></i> Calcular
                                     </button>
-                                    <button type="reset" class="btn btn-danger" id="btn-reset">
+                                    <button type="reset" class="btn btn-sm btn-danger" id="btn-reset">
                                         <i class="fas fa-trash-alt"></i> Limpar
                                     </button>
+                                    <button id="shareButton" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-share-alt"></i> Compartilhar
+                                    </button>
                                 </div>
+
                             </form>
                         </div>
 
@@ -190,16 +217,6 @@
                                 </div>
                             </a>
                         </div>
-                        <!-- <div class="col-sm">
-                            <a href="https://play.google.com/store/apps/details?id=com.cwrsiqueira.crp_app&pcampaignid=web_share"
-                                target="_blank" class="btn btn-lg btn-playstore d-block">
-                                <div class="row align-items-center">
-                                    <div class="col-2"><i class="fa-brands fa-google-play" style="font-size: 28px;"></i>
-                                    </div>
-                                    <div class="col-10">Baixe o App na PlayStore</div>
-                                </div>
-                            </a>
-                        </div> -->
                     </div>
                 </section>
 
@@ -227,28 +244,7 @@
                         </ul>
                     </div>
                 </div>
-
-                <!-- <div class="section-divider">
-                    <span class="section-title">Sugestão de vídeos e artigos</span>
-                </div> -->
             </div>
-
-            <!-- <div class="container-fluid">
-                <div class="row justify-content-center gap-3">
-                    <div class="col-sm-4 text-center text-sm-end">
-                        <iframe style="width: 100%; max-width: 310px;"
-                            src="https://www.youtube.com/embed/lvL8-vF3Wjc?si=KIDohUxcuegt_Pf2"
-                            title="YouTube video player" frameborder="0" class="rounded"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <div class="col-sm-4 text-center text-sm-start">
-                        <iframe style="width: 100%; max-width: 310px;"
-                            src="https://www.youtube.com/embed/lvL8-vF3Wjc?si=KIDohUxcuegt_Pf2"
-                            title="YouTube video player" frameborder="0" class="rounded"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div> -->
 
             <section class="container mt-3">
 
@@ -258,7 +254,7 @@
 
                 <div class="information-text">
 
-                    <h4>Como Utilizar a Calculadora de Empréstimo</h4>
+                    <h4 id="comoUtilizarACalculadoraDeEmprestimo">Como Utilizar a Calculadora de Empréstimo</h4>
                     <p>A <strong>Calculadora de Empréstimo</strong> foi desenvolvida para ajudar você a calcular
                         diferentes aspectos de
                         um empréstimo, como valor das parcelas, prazo, taxa de juros ou valor total financiado. A
@@ -267,7 +263,7 @@
                         <strong>PRICE</strong> ou
                         <strong>SAC</strong>.
                     </p>
-                    <p>Você pode realizar cálculos com base em <strong>cinco parâmetros principais</strong>, que
+                    <p>Você pode realizar cálculos com base em <strong>sete parâmetros principais</strong>, que
                         correspondem aos campos
                         no formulário:</p>
 
@@ -277,14 +273,28 @@
                             deseje descobrir qual valor de empréstimo pode assumir com base em uma parcela e taxa de
                             juros específicas,
                             deixe este campo vazio e preencha os outros.</li>
-                        <li><strong>Prazo (meses)</strong>: Insira o período em meses pelo qual deseja financiar o
-                            empréstimo. Caso
-                            deseje saber o prazo ideal para uma parcela e taxa específicas, basta deixar este campo em
-                            branco.</li>
-                        <li><strong>Taxa de Juros Mensal (%)</strong>: Insira a taxa de juros mensal do financiamento.
-                            Se quiser calcular
-                            qual taxa de juros será necessária para um valor de parcela específico, deixe este campo
-                            vazio.</li>
+
+                        <li><strong>Prazo (meses)</strong>: Esse campo refere-se ao período de tempo (em meses) que você
+                            deseja financiar o empréstimo. Caso deseje saber o prazo ideal para uma parcela e taxa
+                            específicas, basta deixar este campo
+                            vazio e preencher os outros.
+                            Quando preenchido, o campo correspondente em anos será atualizado automaticamente com a
+                            conversão equivalente.</li>
+                        <li><strong>Prazo (anos)</strong>: Alternativamente, você pode inserir o prazo em anos. Se você
+                            preencher este campo, o campo de meses será automaticamente atualizado com a conversão
+                            correspondente, facilitando o uso conforme a sua preferência.</li>
+
+                        <li><strong>Taxa Mensal (%)</strong>: Aqui, você insere a taxa de juros mensal do financiamento,
+                            em percentual. Se quiser calcular
+                            qual taxa de juros será necessária para um valor de parcela específico, basta deixar este
+                            campo em branco e preencher
+                            os demais. Ao preencher este campo, a taxa anual correspondente será calculada e preenchida
+                            automaticamente.</li>
+                        <li><strong>Taxa Anual (%)</strong>: Este campo permite inserir a taxa de juros anual. Assim
+                            como no campo de taxa mensal, ao preenchê-lo, o valor da taxa mensal
+                            equivalente será calculado automaticamente, facilitando a análise conforme sua necessidade
+                            de projeção.</li>
+
                         <li><strong>Valor da Parcela</strong>: Refere-se ao valor da parcela que você deseja pagar
                             mensalmente. Caso
                             deseje saber o valor da parcela com base nos outros dados, deixe este campo em branco.</li>
@@ -306,7 +316,10 @@
                         prazo necessário ou a taxa de juros aplicável.
                     </p>
 
-                    <h2>O que são os Sistemas PRICE e SAC?</h2>
+                    <p>Podem ocorrer diferenças nas conversões de prazos e taxas em função da quantidade de casas
+                        decimais utilizadas.</p>
+
+                    <h2 id="oqSaoOsSistemasPriceESac">O que são os Sistemas PRICE e SAC?</h2>
                     <p>Os sistemas <strong>PRICE</strong> e <strong>SAC</strong> são os dois principais métodos de
                         amortização usados em financiamentos e empréstimos, e cada um tem características distintas que
                         influenciam diretamente o valor das parcelas ao longo do tempo e o montante final a ser pago.

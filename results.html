@@ -32,13 +32,17 @@
 
 <body>
 
+    <button id="backToTop" class="btn btn-primary p-3">
+        <i class="fa-solid fa-circle-arrow-up fa-2xl"></i>
+    </button>
+
     <div class="wrapper">
         <main class="content">
             <div class="container">
                 <section class="title-section text-center">
                     <h1 class="title">Calcular Empréstimo</h1>
                     <div class="version-area">
-                        <span class="version">v1.1.0 - 30/10/2024</span>
+                        <span class="version">v1.2.0 -13/11/2024</span>
                     </div>
                     <div class="logo"></div>
                     <p class="fw-bold">Calcule o empréstimo, a parcela, o prazo ou a taxa, na tabela PRICE ou SAC.
@@ -71,18 +75,33 @@
                         <div class="flip-card-front">
                             <form id="rendaForm">
 
+                                <p><a href="#comoUtilizarACalculadoraDeEmprestimo"><small>Como utilizar a Calculadora
+                                            de Empréstimo?</small></a></p>
                                 <div class="form-floating mb-3">
                                     <input type="search" inputmode="numeric" class="form-control value"
                                         id="vlrEmprestimo" placeholder="Valor do Empréstimo">
                                     <label for="valor">Valor do Empréstimo</label>
                                 </div>
 
-                                <div class="form-floating mb-3">
-                                    <input type="search" inputmode="numeric" class="form-control" id="periodo"
-                                        placeholder="Prazo (meses)" maxlength="3">
-                                    <label for="periodo">Prazo (meses)</label>
+                                <p><small>Preencha Prazo em meses ou anos</small></p>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="search" inputmode="numeric" class="form-control" id="periodo"
+                                                placeholder="Prazo (meses)" maxlength="3">
+                                            <label for="periodo">Prazo (meses)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="search" inputmode="numeric" class="form-control"
+                                                id="periodoAnual" placeholder="Prazo (anos)" maxlength="2">
+                                            <label for="periodoAnual">Prazo (anos)</label>
+                                        </div>
+                                    </div>
                                 </div>
 
+                                <p><small>Preencha Taxa mensal ou anual (%)</small></p>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-floating mb-3">
@@ -100,11 +119,15 @@
                                     </div>
                                 </div>
 
+                                <hr>
+
+                                <p><a href="#oqSaoOsSistemasPriceESac"><small>O que são os Sistemas PRICE e
+                                            SAC?</small></a></p>
                                 <div class="form-floating mb-3">
                                     <select name="tipoAmortizacao" id="tipoAmortizacao" class="form-control pt-2"
                                         style="font-size: 1rem;font-weight: 400;color: #6c757d;">
-                                        <option value="price" selected>PRICE</option>
-                                        <option value="sac">SAC</option>
+                                        <option value="price">Sistema PRICE</option>
+                                        <option value="sac">Sistema SAC</option>
                                     </select>
                                 </div>
 
@@ -115,42 +138,61 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-success" id="calcularBtn">
+                                    <button type="button" class="btn btn-sm btn-success" id="calcularBtn">
                                         <i class="fas fa-calculator"></i> Calcular
                                     </button>
-                                    <button type="reset" class="btn btn-danger" id="btn-reset">
+                                    <button type="reset" class="btn btn-sm btn-danger" id="btn-reset">
                                         <i class="fas fa-trash-alt"></i> Limpar
                                     </button>
+                                    <button id="" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-share-alt"></i> Compartilhar
+                                    </button>
                                 </div>
+
                             </form>
                         </div>
 
                         <!-- Resultados (verso) -->
                         <div class="flip-card-back">
                             <div class="result-section">
-                                <p id="resultEmprestimo"></p>
-                                <p id="resultPrazo"></p>
-                                <p id="resultTaxa"></p>
-                                <p id="resultParcelaInicial"></p>
-                                <p id="resultParcelaFinal"></p>
-                                <p id="resultSistema"></p>
-                                <p id="resultTotal"></p>
-                                <p id="resultJuros"></p>
-                                <hr>
-                                <div class="btn-area">
-                                    <button class="btn btn-primary my-1" id="voltarBtn">
-                                        <i class="fas fa-arrow-left"></i> Voltar
+                                <p id="resultEmprestimo" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultPrazo" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultTaxa" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultTaxaAnual" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultParcelaInicial" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultParcelaFinal" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultSistema" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultTotal" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <p id="resultJuros" class="d-flex justify-content-between border-bottom"
+                                    style="border-color:#6c757d1a;"></p>
+                                <div class="d-flex justify-content-between mt-3">
+                                    <button class="btn btn-sm btn-success my-1" id="voltarBtn">
+                                        <i class="fas fa-rotate-left"></i> Recalcular
                                     </button>
-                                    <button type="button" class="btn btn-secondary my-1" id="copiarBtn">
-                                        <i class="fas fa-copy"></i> Copiar Resultados
+                                    <button type="button" class="btn btn-sm btn-secondary my-1" id="copiarBtn">
+                                        <i class="fas fa-copy"></i> Copiar
+                                    </button>
+                                    <button id="shareButton" class="btn btn-sm btn-warning my-1">
+                                        <i class="fas fa-share-alt"></i> Compartilhar
                                     </button>
                                 </div>
                             </div>
+                            <hr>
                             <p>
                                 <strong>IMPORTANTE</strong>: O valor das parcelas pode variar caso haja a incidência de
                                 impostos ou taxas adicionais. Para mais informações, consulte o seu contrato de
                                 empréstimo
                                 ou entre em contato com o agente de crédito.
+                            <p><a href="#entendendoOsResultados"><small>Entendendo os resultados</small></a></p>
+                            <p><a href="#oqSaoOsSistemasPriceESac"><small>Oq são os Sistema PRICE e SAC?</small></a></p>
                             </p>
                         </div>
                     </div>
@@ -173,16 +215,6 @@
                                 </div>
                             </a>
                         </div>
-                        <!-- <div class="col-sm">
-                            <a href="https://play.google.com/store/apps/details?id=com.cwrsiqueira.crp_app&pcampaignid=web_share"
-                                target="_blank" class="btn btn-lg btn-playstore d-block">
-                                <div class="row align-items-center">
-                                    <div class="col-2"><i class="fa-brands fa-google-play" style="font-size: 28px;"></i>
-                                    </div>
-                                    <div class="col-10">Baixe o app na PlayStore</div>
-                                </div>
-                            </a>
-                        </div> -->
                     </div>
                 </section>
 
@@ -210,28 +242,7 @@
                         </ul>
                     </div>
                 </div>
-
-                <!-- <div class="section-divider">
-                    <span class="section-title">Sugestão de vídeos e artigos</span>
-                </div> -->
             </div>
-
-            <!-- <div class="container-fluid">
-                <div class="row justify-content-center gap-3">
-                    <div class="col-sm-4 text-center text-sm-end">
-                        <iframe style="width: 100%; max-width: 310px;"
-                            src="https://www.youtube.com/embed/lvL8-vF3Wjc?si=KIDohUxcuegt_Pf2"
-                            title="YouTube video player" frameborder="0" class="rounded"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <div class="col-sm-4 text-center text-sm-start">
-                        <iframe style="width: 100%; max-width: 310px;"
-                            src="https://www.youtube.com/embed/lvL8-vF3Wjc?si=KIDohUxcuegt_Pf2"
-                            title="YouTube video player" frameborder="0" class="rounded"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div> -->
 
             <section class="container">
 
@@ -241,7 +252,7 @@
 
                 <div class="information-text">
 
-                    <h4>Entendendo os Resultados</h4>
+                    <h4 id="entendendoOsResultados">Entendendo os Resultados</h4>
                     <p>Abaixo estão as explicações detalhadas de cada item calculado para ajudar você a entender melhor
                         o que cada um
                         significa e como ele contribui para o seu planejamento financeiro.</p>
@@ -251,13 +262,19 @@
                             influencia diretamente no valor das parcelas e nos juros que você pagará ao longo do tempo.
                         </li>
 
-                        <li><strong>Prazo (meses):</strong> Este é o tempo em que você vai pagar o empréstimo, expresso
-                            em meses. O prazo impacta o valor das parcelas, sendo que prazos maiores geralmente resultam
+                        <li><strong>Prazo (meses e anos):</strong> Este é o tempo em que você vai pagar o empréstimo,
+                            expresso
+                            em meses e anos. O prazo impacta o valor das parcelas, sendo que prazos maiores geralmente
+                            resultam
                             em parcelas menores, porém com mais juros acumulados.</li>
 
-                        <li><strong>Taxa de Juros Mensal (%):</strong> A taxa de juros mensal é o percentual aplicado ao
+                        <li><strong>Taxa Mensal (%):</strong> A taxa de juros mensal é o percentual aplicado ao
                             saldo devedor a cada mês. Uma taxa de juros mais alta aumenta o valor final pago e o valor
                             das parcelas.</li>
+
+                        <li><strong>Taxa Anual (%):</strong> A taxa de juros anual é a equivalente percentual à taxa
+                            mensal aplicada ao
+                            saldo devedor a cada ano.</li>
 
                         <li><strong>Valor da Parcela Inicial:</strong> No sistema SAC, as parcelas iniciais tendem a ser
                             mais altas, pois a amortização do saldo devedor é constante e os juros são calculados sobre
@@ -287,7 +304,10 @@
                         escolha do sistema de amortização e o planejamento são essenciais para adequar o financiamento
                         às suas necessidades financeiras!</p>
 
-                    <h2>O que são os Sistemas PRICE e SAC?</h2>
+                    <p>Podem ocorrer diferenças nas conversões de prazos e taxas em função da quantidade de casas
+                        decimais utilizadas.</p>
+
+                    <h2 id="oqSaoOsSistemasPriceESac">O que são os Sistemas PRICE e SAC?</h2>
                     <p>Os sistemas <strong>PRICE</strong> e <strong>SAC</strong> são os dois principais métodos de
                         amortização usados em financiamentos e empréstimos, e cada um tem características distintas que
                         influenciam diretamente o valor das parcelas ao longo do tempo e o montante final a ser pago.

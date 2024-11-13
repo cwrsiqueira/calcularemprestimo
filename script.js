@@ -1,40 +1,113 @@
+//// SCRIPT BOTÃO BACK TO TOP
+// Exibe o botão quando o usuário rola para baixo
+window.onscroll = function () {
+  const backToTopButton = document.getElementById("backToTop");
+  if (document.documentElement.scrollTop > 300) {
+    // Mostrar após 300px de rolagem
+    backToTopButton.style.display = "block";
+  } else {
+    backToTopButton.style.display = "none";
+  }
+};
+
+// Função para rolar suavemente até o topo
+document.getElementById("backToTop").onclick = function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+////----
+
+//Compartilhar
+document.getElementById("shareButton").addEventListener("click", async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Calculadora de Empréstimo",
+        text: "A Calculadora de Empréstimo foi desenvolvida para ajudar você a calcular diferentes aspectos de um empréstimo, como valor das parcelas, prazo, taxa de juros ou valor total financiado.",
+        url: "https://calcularemprestimo.com",
+      });
+      console.log("Compartilhamento bem-sucedido!");
+    } catch (error) {
+      console.log("Erro ao compartilhar:", error);
+    }
+  } else {
+    alert(
+      "A API de compartilhamento não é suportada neste navegador. Tente copiar os resultados e colar."
+    );
+  }
+});
+////----
+
 // Formatar máscaras dos valores (para campos de input com valores monetários e percentuais)
 $(".value").mask("000.000.000,00", { reverse: true }); // Formata o valor monetário com pontuação e vírgula (ex: 1.000,00)
 $(".percent").mask("00,00", { reverse: true }); // Formata o valor percentual com vírgula (ex: 10,00%)
 
-//// CONVERTE JUROS MENSAIS EM ANUAIS E VICE VERSA
+//// CONVERTE PRAZO MENSAL EM ANUAL E VICE VERSA
+// Pega os campos onde o usuário digita os prazos
+const periodoAnual = document.querySelector("#periodoAnual");
+const periodo = document.querySelector("#periodo");
+// Enquanto o usuário digita o prazo anual, transforma em prazo mensal e preenche o campo Prazo (meses)
+periodoAnual.addEventListener("input", function () {
+  if (this.value == "") periodo.value = "";
+  else periodo.value = Math.floor(periodoAnual.value * 12);
+});
+// Enquanto o usuário digita o prazo mensal, transforma em prazo anual e preenche o campo Prazo (anos)
+// O campo Prazo (anos) fica desabilitado quando o usuário preenche o Prazo (meses) e habilita quando está em branco
+periodo.addEventListener("input", function () {
+  if (this.value == "") {
+    periodoAnual.value = "";
+    periodoAnual.removeAttribute("disabled");
+  } else {
+    periodoAnual.setAttribute("disabled", true);
+    periodoAnual.value = Math.floor(periodo.value / 12);
+  }
+});
+//// -----------
 
+//// CONVERTE JUROS MENSAIS EM ANUAIS E VICE VERSA
 // Pega os campos onde o usuário digita as taxas de juros
 const txAnual = document.querySelector("#txAnual");
 const txPeriodo = document.querySelector("#txPeriodo");
-
 // Enquanto o usuário digita o juros anual, transforma em juros mensal e preenche o campo Taxa Mensal
-txAnual.addEventListener("keyup", function () {
-  let value = this.value.replace(",", ".");
-  let txMensal = Math.pow(1 + value / 100, 1 / 12) - 1;
-  txPeriodo.value = (txMensal * 100).toFixed(2).replace(".", ",");
+txAnual.addEventListener("input", function () {
+  if (this.value == "") {
+    txPeriodo.value = "";
+  } else {
+    let value = this.value.replace(",", ".");
+    let txMensal = Math.pow(1 + value / 100, 1 / 12) - 1;
+    txPeriodo.value = (txMensal * 100).toFixed(2).replace(".", ",");
+  }
 });
-
 // Enquanto o usuário digita o juros mensal, transforma em juros anual e preenche o campo Taxa Anual
-txPeriodo.addEventListener("keyup", function () {
-  let value = this.value.replace(",", ".");
-  let txPeriodo = Math.pow(1 + value / 100, 12) - 1;
-  txAnual.value = (txPeriodo * 100).toFixed(2).replace(".", ",");
+txPeriodo.addEventListener("input", function () {
+  if (this.value == "") {
+    txAnual.value = "";
+  } else {
+    let value = this.value.replace(",", ".");
+    let txPeriodo = Math.pow(1 + value / 100, 12) - 1;
+    txAnual.value = (txPeriodo * 100).toFixed(2).replace(".", ",");
+  }
 });
-
 //// -----------
 
 // Recupera valores previamente salvos no sessionStorage e preenche os campos correspondentes
 document.getElementById("periodo").value =
   sessionStorage.getItem("periodo") || "";
+
+document.getElementById("periodoAnual").value =
+  sessionStorage.getItem("periodoAnual") ?? "";
+
 document.getElementById("txPeriodo").value =
   sessionStorage.getItem("txPeriodo") || "";
+
 document.getElementById("txAnual").value =
   sessionStorage.getItem("txAnual") || "";
+
 document.getElementById("vlrEmprestimo").value =
   sessionStorage.getItem("vlrEmprestimo") || "";
+
 document.getElementById("vlrParcela").value =
   sessionStorage.getItem("vlrParcela") || "";
+
 document.getElementById("tipoAmortizacao").value =
   sessionStorage.getItem("tipoAmortizacao") || "price";
 
@@ -48,6 +121,7 @@ document.querySelector("#btn-reset").addEventListener("click", function () {
 function calcularemprestimo() {
   // Captura os valores inseridos pelo usuário
   const periodo = document.getElementById("periodo").value;
+  const periodoAnual = document.getElementById("periodoAnual").value;
   const txPeriodo = document.getElementById("txPeriodo").value;
   const txAnual = document.getElementById("txAnual").value;
   const vlrEmprestimo = document.getElementById("vlrEmprestimo").value;
@@ -56,6 +130,7 @@ function calcularemprestimo() {
 
   // Salva os valores no sessionStorage para manter as informações na página
   sessionStorage.setItem("periodo", periodo);
+  sessionStorage.setItem("periodoAnual", periodoAnual);
   sessionStorage.setItem("txPeriodo", txPeriodo);
   sessionStorage.setItem("txAnual", txAnual);
   sessionStorage.setItem("vlrEmprestimo", vlrEmprestimo);
@@ -124,6 +199,7 @@ function calcularemprestimo() {
   // Conversão e cálculo dos valores
   let prazo = periodo ? periodo : 0,
     taxa = txPeriodo ? parseFloat(formatarValor(txPeriodo)) : 0,
+    taxaAnual = txAnual ? parseFloat(formatarValor(txAnual)) : 0,
     emprestimo = vlrEmprestimo ? parseFloat(formatarValor(vlrEmprestimo)) : 0,
     parcela = vlrParcela ? parseFloat(formatarValor(vlrParcela)) : 0,
     parcelaInicial = 0,
@@ -244,6 +320,8 @@ function calcularemprestimo() {
         parcelaInicial = parcela;
         parcelaFinal = parcelas[parcelas.length - 1].parcelaValor;
       }
+
+      taxaAnual = (Math.pow(1 + taxaCalculada / 100, 12) - 1) * 100;
 
       taxa = taxaCalculada;
       juros = total - emprestimo;
@@ -377,6 +455,10 @@ function calcularemprestimo() {
   );
   sessionStorage.setItem("juros", juros ? formatarValor(juros, false) : "N/A");
   sessionStorage.setItem("taxa", taxa ? formatarValor(taxa, false) : "N/A");
+  sessionStorage.setItem(
+    "taxaAnual",
+    taxaAnual ? formatarValor(taxaAnual, false) : "N/A"
+  );
   sessionStorage.setItem("total", total ? formatarValor(total, false) : "N/A");
 
   // Animação para "virar o cartão" e mostrar os resultados
@@ -416,39 +498,57 @@ if (currentPage == "results.html" && !sessionStorage.getItem("emprestimo")) {
 
 if (document.getElementById("resultPrazo")) {
   // Exibe os resultados na página de resultados
-  document.getElementById("resultPrazo").textContent = `Prazo: ${
-    sessionStorage.getItem("prazo") || "---"
-  }`;
-  document.getElementById(
-    "resultParcelaInicial"
-  ).textContent = `Parcela Inicial: $ ${
-    sessionStorage.getItem("parcelaInicial") || "---"
-  }`;
-  document.getElementById(
-    "resultParcelaFinal"
-  ).textContent = `Parcela Final: $ ${
-    sessionStorage.getItem("parcelaFinal") || "---"
-  }`;
   document.getElementById(
     "resultEmprestimo"
-  ).textContent = `Valor do Empréstimo: $ ${
+  ).innerHTML = `<span>Valor do Empréstimo:</span> $ ${
     sessionStorage.getItem("emprestimo") || "---"
   }`;
-  document.getElementById("resultJuros").textContent = `Juros Totais: $ ${
-    sessionStorage.getItem("juros") || "---"
-  }`;
-  document.getElementById("resultTaxa").textContent = `Taxa Mensal: ${
+
+  document.getElementById(
+    "resultTaxa"
+  ).innerHTML = `<span>Taxa Mensal:</span> ${
     sessionStorage.getItem("taxa") || "---"
   }%`;
-  document.getElementById("resultTotal").textContent = `Total a Pagar: $ ${
-    sessionStorage.getItem("total") || "---"
+
+  document.getElementById(
+    "resultTaxaAnual"
+  ).innerHTML = `<span>Taxa Anual:</span> ${
+    sessionStorage.getItem("taxaAnual") || "---"
+  }%`;
+  document.getElementById("resultPrazo").innerHTML = `<span>Prazo:</span> ${
+    sessionStorage.getItem("prazo") || "---"
   }`;
+
+  document.getElementById(
+    "resultParcelaInicial"
+  ).innerHTML = `<span>Parcela Inicial:</span> $ ${
+    sessionStorage.getItem("parcelaInicial") || "---"
+  }`;
+
+  document.getElementById(
+    "resultParcelaFinal"
+  ).innerHTML = `<span>Parcela Final:</span> $ ${
+    sessionStorage.getItem("parcelaFinal") || "---"
+  }`;
+
   document.getElementById(
     "resultSistema"
-  ).textContent = `Sistema de Amortização: ${
+  ).innerHTML = `<span>Sistema de Amortização:</span> ${
     sessionStorage.getItem("tipoAmortizacao") === "price"
       ? "Tabela PRICE"
       : "Tabela SAC"
+  }`;
+
+  document.getElementById(
+    "resultTotal"
+  ).innerHTML = `<span>Total a Pagar:</span> $ ${
+    sessionStorage.getItem("total") || "---"
+  }`;
+
+  document.getElementById(
+    "resultJuros"
+  ).innerHTML = `<span>Juros Totais:</span> $ ${
+    sessionStorage.getItem("juros") || "---"
   }`;
 }
 
@@ -464,6 +564,7 @@ if (document.getElementById("copiarBtn")) {
     const emprestimo = document.getElementById("resultEmprestimo").textContent;
     const juros = document.getElementById("resultJuros").textContent;
     const taxa = document.getElementById("resultTaxa").textContent;
+    const taxaAnual = document.getElementById("resultTaxaAnual").textContent;
     const total = document.getElementById("resultTotal").textContent;
     const tipoAmortizacao =
       document.getElementById("resultSistema").textContent;
@@ -476,6 +577,7 @@ Resultados
 ${emprestimo}
 ${prazo}
 ${taxa}
+${taxaAnual}
 ${tipoAmortizacao}
 ${parcelaInicial}
 ${parcelaFinal}
