@@ -226,6 +226,30 @@ function calcularemprestimo() {
         parcelaFinal = parcela;
         total = parcela * prazo;
         juros = total - emprestimo;
+
+        // Exemplo simplificado de como montar o array de parcelas
+        let parcelas = [];
+        let calcParcela =
+          (emprestimo * (taxa / 100)) / (1 - Math.pow(1 + taxa / 100, -prazo));
+        saldoDevedor = emprestimo;
+        for (let i = 1; i <= prazo; i++) {
+          // Aqui você calcula os valores para cada parcela:
+          let parcelaNr = i;
+          let juros = saldoDevedor * (taxa / 100);
+          let parcelaValor = calcParcela;
+          let amortizacaoMensal = parcelaValor - juros;
+          saldoDevedor = saldoDevedor + juros - parcelaValor;
+
+          parcelas.push({
+            parcelaNr,
+            parcelaValor: parcelaValor.toFixed(2),
+            juros: juros.toFixed(2),
+            amortizacaoMensal: amortizacaoMensal.toFixed(2),
+            saldoDevedor: saldoDevedor.toFixed(2),
+          });
+        }
+
+        console.log(parcelas);
       }
 
       if (tipoAmortizacao === "sac") {
@@ -256,6 +280,8 @@ function calcularemprestimo() {
             saldoDevedor,
           });
         }
+
+        console.log(parcelas);
 
         parcelaInicial = parcela;
         parcelaFinal = parcelas[parcelas.length - 1].parcelaValor;
@@ -382,6 +408,28 @@ function calcularemprestimo() {
         calcParcelaFinal = calcParcela;
         calcTotal = prazo * calcParcela;
         calcJuros = prazo * calcParcela - emprestimo;
+
+        // Exemplo simplificado de como montar o array de parcelas
+        let parcelas = [];
+        let saldoDevedor = emprestimo;
+        for (let i = 1; i <= prazo; i++) {
+          // Aqui você calcula os valores para cada parcela:
+          let parcelaNr = i;
+          let juros = saldoDevedor * (taxa / 100);
+          let parcelaValor = calcParcela;
+          let amortizacaoMensal = parcelaValor - juros;
+          saldoDevedor = saldoDevedor + juros - parcelaValor;
+
+          parcelas.push({
+            parcelaNr,
+            parcelaValor: parcelaValor.toFixed(2),
+            juros: juros.toFixed(2),
+            amortizacaoMensal: amortizacaoMensal.toFixed(2),
+            saldoDevedor: saldoDevedor.toFixed(2),
+          });
+        }
+
+        console.log(parcelas);
       }
 
       let parcelas = [];
@@ -411,6 +459,8 @@ function calcularemprestimo() {
         calcParcela = parcelas[0].parcelaValor;
         calcParcelaFinal = parcelas[parcelas.length - 1].parcelaValor;
       }
+
+      console.log(parcelas);
 
       prazo = prazo;
       taxa = taxa;
@@ -500,55 +550,46 @@ if (document.getElementById("resultPrazo")) {
   // Exibe os resultados na página de resultados
   document.getElementById(
     "resultEmprestimo"
-  ).innerHTML = `<span>Valor do Empréstimo:</span> $ ${
-    sessionStorage.getItem("emprestimo") || "---"
+  ).innerHTML = `<span>Valor do Empréstimo:</span> $ ${sessionStorage.getItem("emprestimo") || "---"
   }`;
 
   document.getElementById(
     "resultTaxa"
-  ).innerHTML = `<span>Taxa Mensal:</span> ${
-    sessionStorage.getItem("taxa") || "---"
+  ).innerHTML = `<span>Taxa Mensal:</span> ${sessionStorage.getItem("taxa") || "---"
   }%`;
 
   document.getElementById(
     "resultTaxaAnual"
-  ).innerHTML = `<span>Taxa Anual:</span> ${
-    sessionStorage.getItem("taxaAnual") || "---"
+  ).innerHTML = `<span>Taxa Anual:</span> ${sessionStorage.getItem("taxaAnual") || "---"
   }%`;
-  document.getElementById("resultPrazo").innerHTML = `<span>Prazo:</span> ${
-    sessionStorage.getItem("prazo") || "---"
-  }`;
+  document.getElementById("resultPrazo").innerHTML = `<span>Prazo:</span> ${sessionStorage.getItem("prazo") || "---"
+    }`;
 
   document.getElementById(
     "resultParcelaInicial"
-  ).innerHTML = `<span>Parcela Inicial:</span> $ ${
-    sessionStorage.getItem("parcelaInicial") || "---"
+  ).innerHTML = `<span>Parcela Inicial:</span> $ ${sessionStorage.getItem("parcelaInicial") || "---"
   }`;
 
   document.getElementById(
     "resultParcelaFinal"
-  ).innerHTML = `<span>Parcela Final:</span> $ ${
-    sessionStorage.getItem("parcelaFinal") || "---"
+  ).innerHTML = `<span>Parcela Final:</span> $ ${sessionStorage.getItem("parcelaFinal") || "---"
   }`;
 
   document.getElementById(
     "resultSistema"
-  ).innerHTML = `<span>Sistema de Amortização:</span> ${
-    sessionStorage.getItem("tipoAmortizacao") === "price"
-      ? "Tabela PRICE"
-      : "Tabela SAC"
+  ).innerHTML = `<span>Sistema de Amortização:</span> ${sessionStorage.getItem("tipoAmortizacao") === "price"
+    ? "Tabela PRICE"
+    : "Tabela SAC"
   }`;
 
   document.getElementById(
     "resultTotal"
-  ).innerHTML = `<span>Total a Pagar:</span> $ ${
-    sessionStorage.getItem("total") || "---"
+  ).innerHTML = `<span>Total a Pagar:</span> $ ${sessionStorage.getItem("total") || "---"
   }`;
 
   document.getElementById(
     "resultJuros"
-  ).innerHTML = `<span>Juros Totais:</span> $ ${
-    sessionStorage.getItem("juros") || "---"
+  ).innerHTML = `<span>Juros Totais:</span> $ ${sessionStorage.getItem("juros") || "---"
   }`;
 }
 

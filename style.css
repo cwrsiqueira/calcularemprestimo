@@ -237,3 +237,22 @@ footer .social-icons a:hover {
   transform: scale(1.1);
   color: #ffd900aa;
 }
+
+/* CUSTOM COLORS */
+.red-300 {
+  background-color: #ea868f;
+  color: #212529;
+}
+.red-300:hover {
+  background-color: #e35d6a;
+  color: #212529;
+}
+
+.green-300 {
+  background-color: #75b798;
+  color: #212529;
+}
+.green-300:hover {
+  background-color: #479f76;
+  color: #212529;
+}

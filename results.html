@@ -184,6 +184,24 @@
                                         <i class="fas fa-share-alt"></i> Compartilhar
                                     </button>
                                 </div>
+
+                                <div class="section-divider">
+                                    <span class="section-title">Gerar o relatório completo</span>
+                                </div>
+
+                                <div class="text-center">
+                                    <p class="text-danger fs-3 shadow">EM BREVE</p>
+                                </div>
+
+                                <div class="d-flex justify-content-around mt-2">
+                                    <button id="gerarPdf" class="btn btn-sm red-300 my-1">
+                                        <i class="fas fa-file-pdf"></i> PDF
+                                    </button>
+                                    <button id="gerarCsv" class="btn btn-sm green-300 my-1">
+                                        <i class="fas fa-file-csv"></i> CSV
+                                    </button>
+                                </div>
+
                             </div>
                             <hr>
                             <p>
@@ -208,10 +226,12 @@
 
                         <div class="col-sm">
                             <a href="https://link.mercadopago.com.br/carlosdev" target="_blank"
-                                class="btn btn-lg btn-cafe d-block">
+                                class="btn btn-lg btn-cafe d-block border border-dark">
                                 <div class="row align-items-center">
-                                    <div class="col-2"><i class="fas fa-coffee" style="font-size: 28px;"></i></div>
-                                    <div class="col-10">Me pague um cafezinho</div>
+                                    <div class="col text-end"><i
+                                            class="fa-solid fa-hand-holding-dollar fa-fade fa-lg"></i>
+                                    </div>
+                                    <div class="col text-start">Gorjeta</div>
                                 </div>
                             </a>
                         </div>
@@ -401,6 +421,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- jsPDF e AutoTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <!-- Vercel Script tag -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
