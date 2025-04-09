@@ -228,14 +228,14 @@
                         </div>
 
                         <div class="col-sm">
-                            <a href="https://link.mercadopago.com.br/carlosdev" target="_blank"
-                                class="btn btn-lg btn-cafe d-block border border-dark border-3">
+                            <div class="btn btn-lg btn-cafe d-block border border-dark border-3"
+                                onclick="abrirModalPix()">
                                 <div class="row align-items-center">
                                     <div class="col-2"><i class="fa-solid fa-hand-holding-dollar fa-lg"></i>
                                     </div>
-                                    <div class="col-10 text-start">Contribua com qualquer valor</div>
+                                    <div class="col-10 text-start">Apoie a Calculadora de Empréstimo</div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -542,6 +542,29 @@
                 return acc;
             }, {});
             return cookies[nome];
+        }
+
+        const abrirModalPix = () => {
+            const checkbox = document.getElementById("naoMostrarHoje");
+            const modalEl = document.getElementById("pixModal");
+            const modalInstance = new bootstrap.Modal(modalEl);
+
+            modalInstance.show();
+
+            if (getCookie("naoMostrarPixHoje")) {
+                checkbox.setAttribute('checked', 'checked');
+                checkbox.setAttribute('disabled', 'disabled');
+            }
+
+            // Quando o usuário marca o checkbox, define o cookie e fecha o modal
+            if (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    if (checkbox.checked) {
+                        criarCookieExpirandoHoje("naoMostrarPixHoje", "true");
+                        modalInstance.hide();
+                    }
+                });
+            }
         }
 
         // Quando a página carregar
