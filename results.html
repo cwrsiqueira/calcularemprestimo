@@ -459,6 +459,114 @@
         </footer>
     </div>
 
+    <!-- Modal PIX -->
+    <div class="modal fade" id="pixModal" tabindex="-1" aria-labelledby="pixModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-2 border-primary">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="pixModalLabel">Apoie a Calculadora de Empréstimo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="mb-2">Os relatórios completos são gratuitos, mas se eles estão te ajudando, considere
+                        contribuir para manter o site no ar:</p>
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                        <button class="btn btn-outline-primary btn-sm" onclick="mostrarPix('2')">R$ 2,00</button>
+                        <button class="btn btn-outline-success btn-sm" onclick="mostrarPix('3')">R$ 3,00</button>
+                        <button class="btn btn-outline-warning btn-sm" onclick="mostrarPix('5')">R$ 5,00</button>
+                    </div>
+                    <div id="pixInfo" class="text-start" style="display:none;">
+                        <p class="fw-bold">Código Copia e Cola:</p>
+                        <textarea id="pixCode" class="form-control mb-2" rows="3" readonly></textarea>
+                        <button class="btn btn-sm btn-secondary mb-3" onclick="copiarPix()">Copiar Código</button>
+                    </div>
+                    <p>Não pode contribuir agora? Nos ajude compartilhando o site:</p>
+                    <div class="d-flex justify-content-center gap-2 mb-2">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://calcularemprestimo.com"
+                            target="_blank" class="btn btn-sm btn-primary"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com/intent/tweet?text=Conheça%20essa%20calculadora%20de%20empréstimos%20excelente!%20https://calcularemprestimo.com"
+                            target="_blank" class="btn btn-sm btn-info"><i class="fab fa-twitter"></i></a>
+                        <a href="https://api.whatsapp.com/send?text=Conheça%20essa%20calculadora%20de%20empréstimos:%20https://calcularemprestimo.com"
+                            target="_blank" class="btn btn-sm btn-success"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <p class="small mt-2">Ou copie o link: <br><code>https://calcularemprestimo.com</code></p>
+                    <p class="text-muted small mt-3 mb-1">Meta do mês: R$ 50</p>
+                    <div class="progress mb-2" role="progressbar">
+                        <div class="progress-bar bg-success p-1" style="width: 20%">R$ 10 arrecadado</div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="checkbox" value="" id="naoMostrarHoje">
+                            <label class="form-check-label small" for="naoMostrarHoje">
+                                Não mostrar mais hoje
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pixCodes = {
+            "2": "00020126330014br.gov.bcb.pix01115781891617252040000530398654042.005802BR5924Carlos Wagner Rodrigues 6008Brasilia62220518daqr92655785409107630428A5",
+            "3": "00020126330014br.gov.bcb.pix01115781891617252040000530398654043.005802BR5924Carlos Wagner Rodrigues 6008Brasilia62220518daqr926557859423956304D96B",
+            "5": "00020126330014br.gov.bcb.pix01115781891617252040000530398654045.005802BR5924Carlos Wagner Rodrigues 6008Brasilia62220518daqr9265578597432263040201"
+        };
+
+        function mostrarPix(valor) {
+            document.getElementById('pixCode').value = pixCodes[valor];
+            document.getElementById('pixInfo').style.display = 'block';
+        }
+
+        function copiarPix() {
+            const campo = document.getElementById('pixCode');
+            campo.select();
+            document.execCommand('copy');
+            alert('Código Pix copiado!');
+        }
+
+        // Criar cookie que expira à meia-noite
+        function criarCookieExpirandoHoje(nome, valor) {
+            const agora = new Date();
+            const expira = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 23, 59, 59);
+            expira.setHours(expira.getHours() - 3);
+            document.cookie = `${nome}=${valor}; expires=${expira.toUTCString()}; path=/`;
+        }
+
+        // Ler cookies
+        function getCookie(nome) {
+            const cookies = document.cookie.split("; ").reduce((acc, atual) => {
+                const [chave, valor] = atual.split("=");
+                acc[chave] = valor;
+                return acc;
+            }, {});
+            return cookies[nome];
+        }
+
+        // Quando a página carregar
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkbox = document.getElementById("naoMostrarHoje");
+            const modalEl = document.getElementById("pixModal");
+            const modalInstance = new bootstrap.Modal(modalEl);
+
+            // Só mostra o modal se o cookie ainda não estiver definido
+            if (!getCookie("naoMostrarPixHoje")) {
+                modalInstance.show();
+            }
+
+            // Quando o usuário marca o checkbox, define o cookie e fecha o modal
+            if (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    if (checkbox.checked) {
+                        criarCookieExpirandoHoje("naoMostrarPixHoje", "true");
+                        modalInstance.hide();
+                    }
+                });
+            }
+        });
+    </script>
+
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
