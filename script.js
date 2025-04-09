@@ -472,6 +472,46 @@ function calcularemprestimo() {
       break;
   }
 
+  // === Gerar a tabela de amortização após o cálculo principal ===
+  let parcelas = [];
+  let saldo = emprestimo;
+  let amortizacao = tipoAmortizacao === "sac" ? saldo / prazo : 0;
+
+  // Define a data de início no mês seguinte
+  let dataAtual = new Date();
+  let dataInicial = new Date(dataAtual.setMonth(dataAtual.getMonth() + 1));
+  dataInicial.setDate(new Date().getDate()); // mantem o mesmo dia do mês
+
+  for (let i = 1; i <= prazo; i++) {
+    let dataParcela = new Date(dataInicial);
+    dataParcela.setMonth(dataParcela.getMonth() + i - 1);
+    let dataFormatada = dataParcela.toLocaleDateString("pt-BR");
+
+    let jurosParcela = saldo * (taxa / 100);
+    let parcelaValor, amortizacaoMensal;
+
+    if (tipoAmortizacao === "price") {
+      parcelaValor = (emprestimo * (taxa / 100)) / (1 - Math.pow(1 + taxa / 100, -prazo));
+      amortizacaoMensal = parcelaValor - jurosParcela;
+    } else {
+      parcelaValor = amortizacao + jurosParcela;
+      amortizacaoMensal = amortizacao;
+    }
+
+    saldo = saldo - amortizacaoMensal;
+
+    parcelas.push({
+      parcelaNr: i,
+      data: dataFormatada,
+      parcelaValor: parcelaValor.toFixed(2),
+      amortizacaoMensal: amortizacaoMensal.toFixed(2),
+      juros: jurosParcela.toFixed(2),
+      saldoDevedor: saldo > 0 ? saldo.toFixed(2) : "0.00"
+    });
+  }
+
+  sessionStorage.setItem("tabelaParcelas", JSON.stringify(parcelas));
+
   // Validações para evitar resultados infinitos
   if (
     emprestimo == Infinity ||
@@ -525,7 +565,7 @@ function voltarFormulario(e) {
   e.preventDefault(); // Previne o comportamento padrão do botão
   document.querySelector(".flip-card").classList.remove("flip-card-flipped"); // Reverte a animação do cartão
   setTimeout(() => {
-    window.location.href = "index.html"; // Redireciona para a página inicial
+    window.location.href = "/"; // Redireciona para a página inicial
   }, 500);
 }
 
@@ -636,5 +676,122 @@ ${juros}
         alert("Erro ao copiar os resultados. Tente novamente.");
         console.error("Erro ao copiar", err);
       });
+  });
+}
+
+// Gerar PDF com jsPDF
+if (document.getElementById("gerarPdf")) {
+  document.getElementById("gerarPdf").addEventListener("click", () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const dados = [
+      ["Valor do Empréstimo", sessionStorage.getItem("emprestimo") || "---"],
+      ["Prazo", sessionStorage.getItem("prazo") || "---"],
+      ["Taxa Mensal", (sessionStorage.getItem("taxa") || "---") + "%"],
+      ["Taxa Anual", (sessionStorage.getItem("taxaAnual") || "---") + "%"],
+      ["Sistema de Amortização", sessionStorage.getItem("tipoAmortizacao") === "price" ? "Tabela PRICE" : "Tabela SAC"],
+      ["Parcela Inicial", sessionStorage.getItem("parcelaInicial") || "---"],
+      ["Parcela Final", sessionStorage.getItem("parcelaFinal") || "---"],
+      ["Total a Pagar", sessionStorage.getItem("total") || "---"],
+      ["Juros Totais", sessionStorage.getItem("juros") || "---"]
+    ];
+
+    doc.text("Relatório do Empréstimo", 14, 15);
+    doc.autoTable({
+      head: [["Campo", "Valor"]],
+      body: dados,
+      startY: 20,
+      didDrawPage: function (data) {
+        doc.setFontSize(10);
+        doc.setTextColor(150);
+        doc.text("Calculadora de Empréstimo - www.calcularemprestimo.com.br", 14, 290);
+      }
+    });
+
+    const tabela = JSON.parse(sessionStorage.getItem("tabelaParcelas") || "[]");
+
+    if (tabela.length > 0) {
+      doc.addPage();
+      doc.text("Tabela de Amortização", 14, 15);
+
+      doc.autoTable({
+        head: [["#", "Data", "Parcela", "Amortização", "Juros", "Saldo Devedor"]],
+        didDrawPage: function (data) {
+          doc.setFontSize(10);
+          doc.setTextColor(150);
+          doc.text("Calculadora de Empréstimo - www.calcularemprestimo.com.br", 14, 290);
+        },
+        body: tabela.map(p => [
+          p.parcelaNr,
+          p.data,
+          "R$ " + parseFloat(p.parcelaValor).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+          "R$ " + parseFloat(p.amortizacaoMensal).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+          "R$ " + parseFloat(p.juros).toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
+          "R$ " + parseFloat(p.saldoDevedor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })
+        ]),
+        startY: 20,
+        styles: { fontSize: 8 },
+        margin: { top: 20 },
+      });
+    }
+
+    doc.save("relatorio_emprestimo.pdf");
+  });
+}
+
+// Gerar arquivo XLS com amortização
+if (document.getElementById("gerarXls")) {
+  document.getElementById("gerarXls").addEventListener("click", () => {
+    const resumo = `
+      <table border="1">
+        <tr><th colspan="2">Resumo</th></tr>
+        <tr><td>Valor do Empréstimo</td><td>${sessionStorage.getItem("emprestimo") || "---"}</td></tr>
+        <tr><td>Prazo</td><td>${sessionStorage.getItem("prazo") || "---"}</td></tr>
+        <tr><td>Taxa Mensal</td><td>${sessionStorage.getItem("taxa") || "---"}%</td></tr>
+        <tr><td>Taxa Anual</td><td>${sessionStorage.getItem("taxaAnual") || "---"}%</td></tr>
+        <tr><td>Sistema</td><td>${sessionStorage.getItem("tipoAmortizacao") === "price" ? "Tabela PRICE" : "Tabela SAC"}</td></tr>
+        <tr><td>Parcela Inicial</td><td>${sessionStorage.getItem("parcelaInicial") || "---"}</td></tr>
+        <tr><td>Parcela Final</td><td>${sessionStorage.getItem("parcelaFinal") || "---"}</td></tr>
+        <tr><td>Total a Pagar</td><td>${sessionStorage.getItem("total") || "---"}</td></tr>
+        <tr><td>Juros Totais</td><td>${sessionStorage.getItem("juros") || "---"}</td></tr>
+        <tr><td colspan="2">Gerado por: Calculadora de Empréstimo - https://calcularemprestimo.com.br</td></tr>
+      </table>
+      <br><br>
+    `;
+
+    const tabela = JSON.parse(sessionStorage.getItem("tabelaParcelas") || "[]");
+
+    const tabelaHtml = `
+      <table border="1">
+        <tr>
+          <th>#</th>
+          <th>Data</th>
+          <th>Parcela</th>
+          <th>Amortização</th>
+          <th>Juros</th>
+          <th>Saldo Devedor</th>
+        </tr>
+        ${tabela.map(p => `
+          <tr>
+            <td>${p.parcelaNr}</td>
+            <td>${p.data}</td>
+            <td>R$ ${parseFloat(p.parcelaValor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td>R$ ${parseFloat(p.amortizacaoMensal).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td>R$ ${parseFloat(p.juros).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td>R$ ${parseFloat(p.saldoDevedor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+          </tr>
+        `).join("")}
+      </table>
+      <p style="font-size: 12px;">Gerado por: Calculadora de Empréstimo - https://calcularemprestimo.com.br</p>
+    `;
+
+    const blob = new Blob([resumo + tabelaHtml], { type: "application/vnd.ms-excel" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "relatorio_emprestimo.xls";
+    a.click();
+    URL.revokeObjectURL(url);
   });
 }
