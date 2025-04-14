@@ -319,7 +319,7 @@ function calcularemprestimo() {
       }
 
       if (tipoAmortizacao === "sac") {
-        amortizacao = emprestimo / prazo;
+        let amortizacao = emprestimo / prazo;
         taxaCalculada = ((parcela - amortizacao) / emprestimo) * 100;
 
         let parcelas = [];
