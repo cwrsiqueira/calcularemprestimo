@@ -54,6 +54,7 @@
 
         gtag('config', 'G-V1JD0D4KM1');
     </script>
+
 </head>
 
 <body>
@@ -172,13 +173,15 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between">
-                                    <button type="button" class="btn btn-sm btn-success" id="calcularBtn">
+                                    <button type="button" class="btn btn-sm btn-success" id="calcularBtn"
+                                        data-monitorar-pegaclick="btn-index-calcular">
                                         <i class="fas fa-calculator"></i> Calcular
                                     </button>
                                     <button type="reset" class="btn btn-sm btn-danger" id="btn-reset">
                                         <i class="fas fa-trash-alt"></i> Limpar
                                     </button>
-                                    <button id="shareButton" class="btn btn-sm btn-warning">
+                                    <button id="shareButton" class="btn btn-sm btn-warning"
+                                        data-monitorar-pegaclick="btn-index-compartilhar">
                                         <i class="fas fa-share-alt"></i> Compartilhar
                                     </button>
                                 </div>
@@ -228,7 +231,8 @@
                     <div>
                         <ul>
                             <a href="https://calcularrendapassiva.com.br/loja/" target="_blank"
-                                class="text-decoration-none text-secondary-emphasis">
+                                class="text-decoration-none text-secondary-emphasis"
+                                data-monitorar-pegaclick="btn-index-loja">
                                 <li class="position-relative border border-1 border-emphasis p-2 rounded">
                                     <strong class="position-relative">Loja Renda Passiva</strong>
                                     <br>
@@ -243,7 +247,8 @@
                                 </li>
                             </a>
                             <a href="https://calcularrendapassiva.com" target="_blank"
-                                class="text-decoration-none text-secondary-emphasis">
+                                class="text-decoration-none text-secondary-emphasis"
+                                data-monitorar-pegaclick="btn-index-rendapassiva">
                                 <li class="position-relative border border-1 border-emphasis p-2 rounded mt-3">
                                     <strong class="position-relative">Calculadora de Renda Passiva</strong>
                                     <br>
@@ -257,7 +262,8 @@
                                 </li>
                             </a>
                             <a href="https://calcularaposentadoria.com" target="_blank"
-                                class="text-decoration-none text-secondary-emphasis">
+                                class="text-decoration-none text-secondary-emphasis"
+                                data-monitorar-pegaclick="btn-index-aposentadoria">
                                 <li class="position-relative border border-1 border-emphasis p-2 rounded mt-3">
                                     <strong class="position-relative">Calculadora de Aposentadoria</strong>
                                     <br>
@@ -295,7 +301,8 @@
                 </div>
 
                 <article>
-                    <a href="articles/como-utilizar-calculadora.html" class="text-decoration-none text-dark">
+                    <a href="articles/como-utilizar-calculadora.html" class="text-decoration-none text-dark"
+                        data-monitorar-pegaclick="btn-index-como-utilizar">
                         <div class="card shadow rounded my-3" id="comoUtilizarACalculadoraDeEmprestimo">
                             <img src="./articles/images/como-usar-calculadora.jpg" class="card-img-top"
                                 alt="Como utilizar a calculadora de empréstimo" />
@@ -311,7 +318,8 @@
                 </article>
 
                 <article>
-                    <a href="articles/sistemas-price-sac.html" class="text-decoration-none text-dark">
+                    <a href="articles/sistemas-price-sac.html" class="text-decoration-none text-dark"
+                        data-monitorar-pegaclick="btn-index-price-sac">
                         <div class="card shadow rounded my-3" id="oqSaoOsSistemasPriceESac">
                             <img src="./articles/images/price-vs-sac.jpg" class="card-img-top"
                                 alt="Diferença entre PRICE e SAC" />
@@ -327,7 +335,7 @@
 
                 <article>
                     <a href="/articles/como-calcular-o-custo-total-de-um-emprestimo.html"
-                        class="text-decoration-none text-dark">
+                        class="text-decoration-none text-dark" data-monitorar-pegaclick="btn-index-custo-total">
                         <div class="card mb-4 shadow-sm">
                             <img src="/articles/images/como-calcular-o-custo-total-de-um-emprestimo.png"
                                 class="card-img-top" alt="Imagem ilustrativa de cálculo de custo total de empréstimo">
@@ -401,6 +409,14 @@
             botoesextras.style.marginTop = flipcardfront - 400 + "px";
         });
     </script>
+
+    <script src="https://pegaclick.carlosdev.com.br/assets/pegaclick.js" defer></script>
+    <script>
+        window.addEventListener('load', function () {
+            Pegaclick.init('73f1db1949464f916e41bb83db3c8410');
+        });
+    </script>
+
 </body>
 
 </html>
